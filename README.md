@@ -1,66 +1,44 @@
-## Foundry
+## HardHat Deployer
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A foundry libary for deploying contracts compiled with HardHat.
 
-Foundry consists of:
+## Dependencies
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- Python 3
+- Foundry
 
-## Documentation
+## Installing
 
-https://book.getfoundry.sh/
+````shell
+forge install napierfi/hardhat-deployer
+```
+
+Add the following to your forge.toml file:
+
+```toml
+[profile.default]
+# ...
+ffi = true
+fs_permissions = [{ access = "read", path = "./artifacts/" }] # or wherever your hardhat artifacts are
+````
+
+And then add the following to your hardhat.config.js file:
+
+```js
+module.exports = {
+  // ...
+  // Avoid foundry cache conflict.
+  paths: {
+    sources: "src", // Use ./src rather than ./contracts as Hardhat expects
+    cache: "hh-cache",
+  },
+};
+```
 
 ## Usage
 
-### Build
-
-```shell
-$ forge build
+```solidity
+import {HardHatDeployer} from "hardhat-deployer/HardHatDeployer.sol";
 ```
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Ensure that your contract is compiled with HardHat and that the artifacts are in the artifacts directory before deploying with HardHatDeployer.
