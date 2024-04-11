@@ -25,6 +25,11 @@ library HardhatDeployer {
         return deploy(creationCode);
     }
 
+    function getBytecode(string memory path) internal returns (bytes memory) {
+        string memory json = vm.readFile(path);
+        return vm.parseJsonBytes(json, ".bytecode");
+    }
+
     /// @dev Deploys a contract from creation code
     function deploy(bytes memory creationCode) private returns (address deployedAddress) {
         assembly {
